@@ -16,50 +16,61 @@ Hosted entirely on **GitHub Pages**, it requires no backend, no installation, an
 
 ---
 
-## ✨ Features
+## ✨ Key Features
 
-- **Microphone Pitch Detection**: Real-time frequency analysis using an autocorrelation algorithm.
-- **Voron-Specific Presets**: Pre-configured tension targets for Voron 250mm, 300mm, and 350mm builds.
-- **Belt Selection**: Dedicated modes for CoreXY A/B belts and Z-axis (Z0-Z3) belts.
-- **Visual Feedback**: Dynamic gauge that turns green when the belt is within the optimal tension range.
-- **Mobile Optimized**: Responsive, touch-friendly UI designed for use right next to your printer.
-- **100% Client-Side**: No data is sent to any server. All audio processing happens locally in your browser.
+- **Harmonic Rejection Algorithm**: Automatically detects and corrects 2nd/3rd harmonics, ensuring you are measuring the true fundamental frequency of the belt.
+- **Pluck Detection Filter**: Uses an RMS amplitude threshold to ignore background noise and only register a reading when the belt is actually plucked.
+- **Auto-Save on Stability**: Automatically saves the measurement to the channel after ~1 second of stable frequency reading.
+- **Belt Spread Analysis**: Compares all measured belts (e.g., Z0-Z3) and calculates the Hz spread to tell you if your belts are balanced (✓ BALANCED) or need adjustment (✗ RE-TENSION).
+- **Custom Configuration**: Fully customizable Target Hz, Range Min/Max, and Gauge Min/Max for non-Voron printers or custom setups.
+- **Mobile-Optimized UI**: Sticky bottom action button, real-time signal strength indicator, and live spectrum analyzer.
 
 ## 🎯 Official Voron Tension Targets
 
 Based on the official Voron documentation, the recommended tension frequencies remain consistent across all printer sizes (250/300/350):
 
-| Belt | Target Frequency | Acceptable Range |
+| Belt Type | Target Frequency | Acceptable Range |
 | :--- | :---: | :---: |
-| **A Belt** | 110 Hz | 100 - 120 Hz |
-| **B Belt** | 110 Hz | 100 - 120 Hz |
 | **Z Belts (Z0-Z3)** | 55 Hz | 50 - 60 Hz |
+| **A/B Belts (CoreXY)** | 110 Hz | 100 - 120 Hz |
 
-*Note: Proper tension ensures dimensional accuracy, prevents skipped steps, and reduces wear on the printer's kinematics.*
+*Note: Proper tension ensures dimensional accuracy, prevents ghosting/skipped steps, and reduces wear on the printer's kinematics.*
 
 ## 🚀 How to Use
 
-1. **Open the App**: Navigate to the hosted GitHub Pages URL on your smartphone or tablet.
-2. **Select Your Setup**: Choose your printer size (250, 300, or 350) and the specific belt you want to measure from the dropdown menus.
-3. **Start Listening**: Tap the **"Start Listening"** button. Your browser will ask for microphone permissions—tap **Allow**.
-4. **Pluck the Belt**: Firmly pluck the belt midway between the motor pulley and the carriage, exactly like a guitar string.
-5. **Adjust**: Hold your phone's microphone 2–4 inches away from the belt. Adjust the belt tensioner until the frequency gauge turns **green** and reads "Perfect Tension!".
+1. **Select Belt Type**: Tap the **Z Belts**, **A/B Belts**, or **Custom** tab at the top.
+2. **Select Channel**: Tap the specific belt you are measuring (e.g., Z0, Z1, A, B).
+3. **Start Measuring**: Tap the sticky **◎ MEASURE** button at the bottom of the screen and allow microphone access.
+4. **Pluck the Belt**: Firmly pluck the belt midway between the motor pulley and the carriage. 
+   - *Watch the **Signal Indicator** bars above the frequency display to ensure your pluck is strong enough to pass the filter.*
+5. **Auto-Save**: Hold the phone steady. Once the frequency stabilizes for ~1 second, it will automatically save to the channel.
+6. **Check Spread**: After measuring all belts, check the **SPREAD** value in the Comparison section to ensure they are balanced.
+
+## ️ Custom Mode Explained
+
+If you are tuning a different printer (like a Trident, Switchwire, or non-Voron CoreXY), select the **Custom** tab to input your specific parameters:
+
+- **Target Hz**: The ideal frequency you are aiming for.
+- **Range Min / Range Max Hz**: Defines the "Perfect" green zone on the gauge and status badge.
+- **Gauge Min / Gauge Max Hz**: Defines the absolute minimum and maximum bounds of the visual slider track.
 
 ## 💡 Tips for Best Results
 
-- **Quiet Environment**: Turn off printer fans, exhaust systems, and nearby appliances. Background noise can interfere with the pitch detection.
+- **Quiet Environment**: Turn off printer fans, exhaust systems, and nearby appliances. 
 - **Plucking Technique**: Use your fingernail or a guitar pick for a clean, sharp pluck. Avoid muting the belt with your other hand.
-- **HTTPS Required**: Modern mobile browsers (iOS Safari, Chrome for Android) strictly require a secure HTTPS connection to access the microphone. GitHub Pages provides this automatically.
+- **Microphone Placement**: Hold your phone's microphone 2–4 inches away from the belt segment you are plucking.
+- **Harmonics**: If your belt is very tight, it might naturally ring at a harmonic (e.g., 165 Hz instead of 55 Hz). The app's harmonic rejection handles this, but plucking closer to the center of the belt segment emphasizes the fundamental frequency.
 
 ## 🛠️ Technical Details
 
-- **Pitch Detection**: Uses the `Web Audio API` (`AnalyserNode`) combined with a time-domain **autocorrelation algorithm** to find the fundamental frequency, complete with parabolic interpolation for sub-pixel accuracy.
-- **Styling**: Pure CSS with CSS variables for easy theming (default is Voron Red/Dark).
+- **Pitch Detection**: Uses the `Web Audio API` (`AnalyserNode`) combined with a time-domain **autocorrelation algorithm** and parabolic interpolation.
+- **Harmonic Rejection**: Calculates the ratio of the detected frequency to the target frequency. If it closely matches an integer multiple (e.g., 3.0x), it divides the frequency to find the true fundamental.
+- **Pluck Filter**: Calculates the Root Mean Square (RMS) of the audio buffer. Pitch detection is only processed if the RMS exceeds the `PLUCK_THRESHOLD` constant.
 - **Deployment**: Static HTML/JS/CSS, deployable to any static host (GitHub Pages, Cloudflare Pages, Netlify, Vercel).
 
 ## ⚠️ Disclaimer
 
-This tool is provided as-is for community convenience. Always double-check your belt tension using the official Voron manual guidelines. The creator is not responsible for any hardware damage resulting from over-tensioning or under-tensioning.
+This tool is provided as-is for community convenience. Always double-check your belt tension using the official manufacturer guidelines. The creator is not responsible for any hardware damage resulting from over-tensioning or under-tensioning.
 
 ## 🙌 Credits & Inspiration
 
@@ -67,4 +78,4 @@ This tool is provided as-is for community convenience. Always double-check your 
 - **Web Audio API Community**: For the foundational pitch-detection algorithms (inspired by Chris Wilson's [Pitch Detect](https://github.com/cwilso/PitchDetect)).
 
 ---
-*Made with ❤️ for the Voron Community.*
+*Made with ❤️ for the 3D Printing Community.*
