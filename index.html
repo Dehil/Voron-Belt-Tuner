@@ -337,7 +337,7 @@
         .comparison-bar {
             height: 100%;
             border-radius: 4px;
-            transition: width 0.5s;
+            transition: width 0.1s;
         }
 
         .bar-perfect { background: var(--green); }
@@ -647,8 +647,8 @@
                 <li data-num="2">Tap MEASURE and allow microphone access</li>
                 <li data-num="3">Pluck the belt firmly with your fingernail</li>
                 <li data-num="4">Hold phone 2-4 inches from the belt</li>
-                <li data-num="5">Result saves automatically when stable</li>
-                <li data-num="6">Pluck again to overwrite with new reading</li>
+                <li data-num="5">Values update live on every pluck</li>
+                <li data-num="6">Tap STOP to freeze the last reading</li>
                 <li data-num="7">Measure all belts → check spread</li>
             </ul>
         </div>
@@ -680,7 +680,6 @@
         let analyser = null;
         let isListening = false;
         let animationId = null;
-        let stableCount = 0;
         let lastFrequency = null;
         let signalStrength = 0;
 
@@ -779,7 +778,6 @@
             const config = CONFIG[currentBelt];
             const zone = document.getElementById('gaugeZone');
             const zoneLabel = document.getElementById('gaugeZoneLabel');
-            const indicator = document.getElementById('gaugeIndicator');
             
             const range = config.gaugeMax - config.gaugeMin;
             const zoneLeft = ((config.min - config.gaugeMin) / range) * 100;
@@ -971,7 +969,6 @@
                     source.connect(analyser);
                     
                     isListening = true;
-                    stableCount = 0;
                     updateActionButton();
                     detectLoop();
                 } catch (err) {
@@ -982,22 +979,16 @@
                 isListening = false;
                 if (animationId) cancelAnimationFrame(animationId);
                 if (audioContext) audioContext.close();
-                resetDisplay();
+                
+                // Retain last measured value - DO NOT reset display
+                if (lastFrequency !== null) {
+                    const key = `${currentBelt}-${currentChannel}`;
+                    const savedFreq = measurements[key] || lastFrequency;
+                    document.getElementById('savedInfo').textContent = `SAVED: ${savedFreq.toFixed(1)} Hz - tap MEASURE to update`;
+                }
+                
                 updateActionButton();
             }
-        }
-
-        function resetDisplay() {
-            document.getElementById('freqDisplay').textContent = '--';
-            document.getElementById('freqDisplay').classList.add('waiting');
-            document.getElementById('statusBadge').textContent = 'WAITING FOR PLUCK';
-            document.getElementById('statusBadge').className = 'status-badge badge-waiting';
-            document.getElementById('gaugeIndicator').classList.add('inactive');
-            lastFrequency = null;
-            
-            document.querySelectorAll('.signal-bar').forEach(bar => {
-                bar.classList.remove('active', 'strong');
-            });
         }
 
         function detectLoop() {
@@ -1038,16 +1029,19 @@
                     badge.className = `status-badge badge-${status.class}`;
                     document.getElementById('gaugeIndicator').classList.remove('inactive');
                     
+                    // Update measurement and UI immediately on every pluck
                     const key = `${currentBelt}-${currentChannel}`;
-                    if (Math.abs(freq - (measurements[key] || freq)) < 2) {
-                        stableCount++;
-                        if (stableCount > 30) {
-                            saveMeasurement(freq);
-                            stableCount = 0;
-                        }
-                    } else {
-                        stableCount = 0;
-                    }
+                    measurements[key] = freq;
+                    
+                    document.getElementById(`val-${currentChannel}`).textContent = freq.toFixed(1) + ' Hz';
+                    const statusEl = document.getElementById(`status-${currentChannel}`);
+                    statusEl.textContent = status.text;
+                    statusEl.className = `channel-status status-${status.class}`;
+                    document.querySelector(`[data-channel="${currentChannel}"]`).classList.add('has-measurement');
+                    
+                    document.getElementById('savedInfo').textContent = `LIVE: ${freq.toFixed(1)} Hz - adjusting...`;
+                    
+                    updateComparison();
                 }
             } else {
                 if (lastFrequency === null) {
@@ -1059,27 +1053,6 @@
             animationId = requestAnimationFrame(detectLoop);
         }
 
-        function saveMeasurement(freq) {
-            const key = `${currentBelt}-${currentChannel}`;
-            measurements[key] = freq;
-            
-            const channels = CONFIG[currentBelt].channels;
-            const channelName = channels[currentChannel];
-            
-            document.getElementById(`val-${currentChannel}`).textContent = freq.toFixed(1) + ' Hz';
-            const status = getStatus(freq);
-            const statusEl = document.getElementById(`status-${currentChannel}`);
-            statusEl.textContent = status.text;
-            statusEl.className = `channel-status status-${status.class}`;
-            
-            document.getElementById('savedInfo').textContent = 
-                `SAVED: ${freq.toFixed(1)} Hz - pluck again to update`;
-            
-            document.querySelector(`[data-channel="${currentChannel}"]`).classList.add('has-measurement');
-            
-            updateComparison();
-        }
-
         document.getElementById('actionBtn').addEventListener('click', toggleListening);
 
         document.getElementById('resetBtn').addEventListener('click', () => {
@@ -1088,9 +1061,12 @@
             document.querySelectorAll('.channel-status').forEach(el => el.textContent = '');
             document.querySelectorAll('.channel').forEach(el => el.classList.remove('has-measurement'));
             document.getElementById('savedInfo').textContent = 'No measurement saved';
-            if (!isListening) {
-                resetDisplay();
-            }
+            document.getElementById('freqDisplay').textContent = '--';
+            document.getElementById('freqDisplay').classList.add('waiting');
+            document.getElementById('statusBadge').textContent = 'WAITING FOR PLUCK';
+            document.getElementById('statusBadge').className = 'status-badge badge-waiting';
+            document.getElementById('gaugeIndicator').classList.add('inactive');
+            lastFrequency = null;
             updateComparison();
         });
 
