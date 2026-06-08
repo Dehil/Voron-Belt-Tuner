@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Voron Belt Tuner</title>
+    <style>
+        :root {
+            --voron-red: #E3262F;
+            --voron-dark: #1a1a1a;
+            --voron-gray: #2d2d2d;
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --text: #ffffff;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--voron-dark);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            touch-action: manipulation;
+        }
+        h1 { margin: 0 0 10px 0; font-size: 1.5rem; color: var(--voron-red); text-transform: uppercase; letter-spacing: 1px; }
+        .subtitle { font-size: 0.85rem; color: #aaa; margin-bottom: 20px; text-align: center; }
+        
+        .controls {
+            width: 100%;
+            max-width: 400px;
+            background: var(--voron-gray);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        .control-group { margin-bottom: 15px; }
+        .control-group label { display: block; font-size: 0.8rem; color: #aaa; margin-bottom: 5px; text-transform: uppercase; }
+        select {
+            width: 100%;
+            padding: 12px;
+            background: #111;
+            color: white;
+            border: 1px solid #444;
+            border-radius: 8px;
+            font-size: 1rem;
+            appearance: none;
+        }
+
+        .tuner-display {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .frequency {
+            font-size: 4rem;
+            font-weight: bold;
+            font-variant-numeric: tabular-nums;
+            margin: 10px 0;
+        }
+        .frequency span { font-size: 1.5rem; color: #aaa; }
+        .status { font-size: 1.2rem; font-weight: bold; margin-bottom: 10px; min-height: 1.5em; }
+        .status.in-range { color: var(--success); }
+        .status.out-of-range { color: var(--voron-red); }
+        .status.listening { color: var(--warning); }
+
+        .gauge-container {
+            width: 100%;
+            height: 20px;
+            background: #111;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            margin: 15px 0;
+            border: 1px solid #444;
+        }
+        .gauge-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--voron-red);
+            transition: width 0.1s, background-color 0.2s;
+        }
+        .gauge-target {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: white;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        .target-info {
+            background: rgba(227, 38, 47, 0.1);
+            border: 1px solid var(--voron-red);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        button {
+            width: 100%;
+            max-width: 400px;
+            padding: 18px;
+            background: var(--voron-red);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background 0.2s;
+        }
+        button:active { background: #b91d24; }
+        button:disabled { background: #555; cursor: not-allowed; }
+
+        .tips {
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: #888;
+            max-width: 400px;
+            line-height: 1.4;
+        }
+        .tips strong { color: #aaa; }
+    </style>
+</head>
+<body>
+
+    <h1>Voron Belt Tuner</h1>
+    <div class="subtitle">Microphone-based tension meter</div>
+
+    <div class="controls">
+        <div class="control-group">
+            <label>Printer Size Preset</label>
+            <select id="sizePreset">
+                <option value="250">Voron 250mm</option>
+                <option value="300" selected>Voron 300mm</option>
+                <option value="350">Voron 350mm</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label>Belt to Measure</label>
+            <select id="beltSelect">
+                <option value="A">A Belt (CoreXY)</option>
+                <option value="B">B Belt (CoreXY)</option>
+                <option value="Z0">Z0 Belt</option>
+                <option value="Z1">Z1 Belt</option>
+                <option value="Z2">Z2 Belt</option>
+                <option value="Z3">Z3 Belt</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="target-info" id="targetInfo">
+        Target: <strong>110 Hz</strong> (Range: 100 - 120 Hz)
+    </div>
+
+    <div class="tuner-display">
+        <div class="status" id="status">Ready to start</div>
+        <div class="frequency" id="freqDisplay">-- <span>Hz</span></div>
+        <div class="gauge-container">
+            <div class="gauge-target"></div>
+            <div class="gauge-fill" id="gaugeFill"></div>
+        </div>
+    </div>
+
+    <button id="toggleBtn">Start Listening</button>
+
+    <div class="tips">
+        <strong>💡 Tips for best results:</strong><br>
+        1. Ensure you are in a quiet room.<br>
+        2. Pluck the belt like a guitar string, midway between the pulley and the carriage.<br>
+        3. Hold your phone's microphone about 2-4 inches away from the plucked belt.<br>
+        4. <em>Note:</em> Official Voron docs recommend ~110Hz for A/B and ~55Hz for Z belts across all sizes (250/300/350).
+    </div>
+
+    <script>
+        // Voron Tension Targets (Official Manual Recommendations)
+        const TARGETS = {
+            'A': { target: 110, min: 100, max: 120 },
+            'B': { target: 110, min: 100, max: 120 },
+            'Z0': { target: 55, min: 50, max: 60 },
+            'Z1': { target: 55, min: 50, max: 60 },
+            'Z2': { target: 55, min: 50, max: 60 },
+            'Z3': { target: 55, min: 50, max: 60 }
+        };
+
+        let audioContext = null;
+        let analyser = null;
+        let mediaStreamSource = null;
+        let isListening = false;
+        let rafId = null;
+        let buf = new Float32Array(2048);
+
+        const beltSelect = document.getElementById('beltSelect');
+        const sizePreset = document.getElementById('sizePreset');
+        const targetInfo = document.getElementById('targetInfo');
+        const freqDisplay = document.getElementById('freqDisplay');
+        const statusDisplay = document.getElementById('status');
+        const gaugeFill = document.getElementById('gaugeFill');
+        const toggleBtn = document.getElementById('toggleBtn');
+
+        function updateTargetInfo() {
+            const belt = beltSelect.value;
+            const t = TARGETS[belt];
+            targetInfo.innerHTML = `Target: <strong>${t.target} Hz</strong> (Range: ${t.min} - ${t.max} Hz)`;
+        }
+
+        beltSelect.addEventListener('change', updateTargetInfo);
+        sizePreset.addEventListener('change', () => {
+            // Note: Voron officially recommends the same tension regardless of size, 
+            // but we acknowledge the selection for user confidence.
+            updateTargetInfo();
+        });
+
+        // Autocorrelation algorithm for pitch detection
+        function autoCorrelate(buf, sampleRate) {
+            let SIZE = buf.length;
+            let rms = 0;
+            for (let i = 0; i < SIZE; i++) {
+                let val = buf[i];
+                rms += val * val;
+            }
+            rms = Math.sqrt(rms / SIZE);
+            if (rms < 0.015) return -1; // Threshold to ignore background noise
+
+            let r1 = 0, r2 = SIZE - 1, thres = 0.2;
+            for (let i = 0; i < SIZE / 2; i++) {
+                if (Math.abs(buf[i]) < thres) { r1 = i; break; }
+            }
+            for (let i = 1; i < SIZE / 2; i++) {
+                if (Math.abs(buf[SIZE - i]) < thres) { r2 = SIZE - i; break; }
+            }
+
+            buf = buf.slice(r1, r2);
+            SIZE = buf.length;
+
+            let c = new Array(SIZE).fill(0);
+            for (let i = 0; i < SIZE; i++) {
+                for (let j = 0; j < SIZE - i; j++) {
+                    c[i] = c[i] + buf[j] * buf[j + i];
+                }
+            }
+
+            let d = 0;
+            while (c[d] > c[d + 1]) d++;
+            let maxval = -1, maxpos = -1;
+            for (let i = d; i < SIZE; i++) {
+                if (c[i] > maxval) {
+                    maxval = c[i];
+                    maxpos = i;
+                }
+            }
+            let T0 = maxpos;
+
+            // Parabolic interpolation for better precision
+            if (T0 > 0 && T0 < SIZE - 1) {
+                let x1 = c[T0 - 1], x2 = c[T0], x3 = c[T0 + 1];
+                let a = (x1 + x3 - 2 * x2) / 2;
+                let b = (x3 - x1) / 2;
+                if (a !== 0) T0 = T0 - b / (2 * a);
+            }
+
+            return sampleRate / T0;
+        }
+
+        function updatePitch() {
+            if (!isListening) return;
+            analyser.getFloatTimeDomainData(buf);
+            let ac = autoCorrelate(buf, audioContext.sampleRate);
+
+            if (ac !== -1) {
+                let freq = Math.round(ac);
+                freqDisplay.innerHTML = `${freq} <span>Hz</span>`;
+                
+                const belt = beltSelect.value;
+                const t = TARGETS[belt];
+                
+                // Calculate gauge percentage (target is 50%, map min/max to 0%/100%)
+                let percent = 50;
+                if (freq < t.target) {
+                    percent = 50 - ((t.target - freq) / (t.target - t.min)) * 50;
+                } else {
+                    percent = 50 + ((freq - t.target) / (t.max - t.target)) * 50;
+                }
+                percent = Math.max(0, Math.min(100, percent));
+                gaugeFill.style.width = `${percent}%`;
+
+                if (freq >= t.min && freq <= t.max) {
+                    gaugeFill.style.backgroundColor = 'var(--success)';
+                    statusDisplay.textContent = 'Perfect Tension!';
+                    statusDisplay.className = 'status in-range';
+                } else {
+                    gaugeFill.style.backgroundColor = 'var(--voron-red)';
+                    statusDisplay.textContent = freq < t.min ? 'Too Loose' : 'Too Tight';
+                    statusDisplay.className = 'status out-of-range';
+                }
+            } else {
+                statusDisplay.textContent = 'Pluck the belt...';
+                statusDisplay.className = 'status listening';
+            }
+
+            rafId = requestAnimationFrame(updatePitch);
+        }
+
+        async function toggleListening() {
+            if (!isListening) {
+                try {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    if (audioContext.state === 'suspended') {
+                        await audioContext.resume();
+                    }
+                    
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaStreamSource = audioContext.createMediaStreamSource(stream);
+                    analyser = audioContext.createAnalyser();
+                    analyser.fftSize = 2048;
+                    mediaStreamSource.connect(analyser);
+
+                    isListening = true;
+                    toggleBtn.textContent = 'Stop Listening';
+                    toggleBtn.style.background = '#555';
+                    statusDisplay.textContent = 'Listening...';
+                    updatePitch();
+                } catch (err) {
+                    alert('Microphone access denied or not available. Please ensure you are using HTTPS and have granted microphone permissions.');
+                    console.error(err);
+                }
+            } else {
+                isListening = false;
+                cancelAnimationFrame(rafId);
+                if (audioContext) audioContext.close();
+                toggleBtn.textContent = 'Start Listening';
+                toggleBtn.style.background = 'var(--voron-red)';
+                statusDisplay.textContent = 'Stopped';
+                statusDisplay.className = 'status';
+                freqDisplay.innerHTML = '-- <span>Hz</span>';
+                gaugeFill.style.width = '0%';
+            }
+        }
+
+        toggleBtn.addEventListener('click', toggleListening);
+        updateTargetInfo();
+    </script>
+</body>
+</html>
