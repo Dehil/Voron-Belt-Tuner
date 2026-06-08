@@ -6,7 +6,7 @@ Hosted entirely on **GitHub Pages**, it requires no backend, no installation, an
 
 **→ [Open the app](https://dehil.github.io/Voron-Belt-Tuner/)**
 
-![Voron Belt Tuner Preview](https://img.shields.io/badge/Voron-2.4-red?style=for-the-badge)
+![Voron Belt Tuner Preview](https://img.shields.io/badge/Voron-2.4-red)
 ![License](https://img.shields.io/badge/license-GPL--3.0-blue)
 ![No install](https://img.shields.io/badge/no%20install-required-green)
 
