@@ -4,7 +4,17 @@ A lightweight, browser-based web application to measure and tune the belt tensio
 
 Hosted entirely on **GitHub Pages**, it requires no backend, no installation, and works directly on your mobile phone's browser.
 
-![Voron Belt Tuner Preview](https://img.shields.io/badge/Voron-2.4-red?style=for-the-badge) ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+**→ [Open the app](https://dehil.github.io/Voron-Belt-Tuner/)**
+
+![Voron Belt Tuner Preview](https://img.shields.io/badge/Voron-2.4-red?style=for-the-badge)
+![License](https://img.shields.io/badge/license-GPL--3.0-blue)
+![No install](https://img.shields.io/badge/no%20install-required-green)
+
+---
+
+![App Screenshot](app.png)
+
+---
 
 ## ✨ Features
 
