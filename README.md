@@ -1,8 +1,8 @@
 # 🎸 Voron Belt Tuner
 
-A lightweight, browser-based web application to measure and tune the belt tension of your Voron 3D printer. It uses your device's microphone and the Web Audio API to detect the fundamental frequency of the plucked belt, functioning exactly like a digital guitar tuner.
+A lightweight, browser-based calibration tool to measure and tune the belt tension of your Voron (and other CoreXY) 3D printers. It uses your device's microphone and the Web Audio API to detect the fundamental frequency of a plucked belt, functioning like a digital guitar tuner specifically designed for 3D printer kinematics.
 
-Hosted entirely on **GitHub Pages**, it requires no backend, no installation, and works directly on your mobile phone's browser.
+Hosted entirely on **GitHub Pages**, it requires no backend, no installation, and works directly on your mobile phone's browser with a sticky, mobile-first UI.
 
 **→ [Open the app](https://dehil.github.io/Voron-Belt-Tuner/)**
 
@@ -20,18 +20,25 @@ Hosted entirely on **GitHub Pages**, it requires no backend, no installation, an
 
 - **Harmonic Rejection Algorithm**: Automatically detects and corrects 2nd/3rd harmonics, ensuring you are measuring the true fundamental frequency of the belt.
 - **Pluck Detection Filter**: Uses an RMS amplitude threshold to ignore background noise and only register a reading when the belt is actually plucked.
-- **Auto-Save on Stability**: Automatically saves the measurement to the channel after ~1 second of stable frequency reading.
+- **Live Updates**: Values update instantly on every pluck—no waiting for stability timers.
 - **Belt Spread Analysis**: Compares all measured belts (e.g., Z0-Z3) and calculates the Hz spread to tell you if your belts are balanced (✓ BALANCED) or need adjustment (✗ RE-TENSION).
 - **Custom Configuration**: Fully customizable Target Hz, Range Min/Max, and Gauge Min/Max for non-Voron printers or custom setups.
 - **Mobile-Optimized UI**: Sticky bottom action button, real-time signal strength indicator, and live spectrum analyzer.
 
+## ⚠️ Crucial: The 150mm Pluck Length
+
+The official Voron documentation specifies that the target frequencies are based on plucking exactly a **150mm section** of the belt. Because the frequency of a vibrating string depends on its length, **if you pluck a longer or shorter section, these target values will not apply!**
+
+- **For A/B Belts:** Move your X extrusion forwards until the X/Y idler centers are **150mm** from the front idler centers.
+- **For Z Belts:** Move the gantry upwards until the fixed side of the belt is **150mm** from the Z idler centers.
+
 ## 🎯 Official Voron Tension Targets
 
-Based on the official Voron documentation, the recommended tension frequencies remain consistent across all printer sizes (250/300/350):
+Based on the [official Voron documentation](https://docs.vorondesign.com/tuning/secondary_printer_tuning.html), the recommended tension frequencies are:
 
 | Belt Type | Target Frequency | Acceptable Range |
 | :--- | :---: | :---: |
-| **Z Belts (Z0-Z3)** | 55 Hz | 50 - 60 Hz |
+| **Z Belts (Z0-Z3)** | 140 Hz | 130 - 150 Hz |
 | **A/B Belts (CoreXY)** | 110 Hz | 100 - 120 Hz |
 
 *Note: Proper tension ensures dimensional accuracy, prevents ghosting/skipped steps, and reduces wear on the printer's kinematics.*
@@ -40,26 +47,12 @@ Based on the official Voron documentation, the recommended tension frequencies r
 
 1. **Select Belt Type**: Tap the **Z Belts**, **A/B Belts**, or **Custom** tab at the top.
 2. **Select Channel**: Tap the specific belt you are measuring (e.g., Z0, Z1, A, B).
-3. **Start Measuring**: Tap the sticky **◎ MEASURE** button at the bottom of the screen and allow microphone access.
-4. **Pluck the Belt**: Firmly pluck the belt midway between the motor pulley and the carriage. 
+3. **Position the Belt**: Move your gantry/extruder so the free span of the belt you are about to pluck is exactly **150mm** long.
+4. **Start Measuring**: Tap the sticky **◎ MEASURE** button at the bottom of the screen and allow microphone access.
+5. **Pluck the Belt**: Firmly pluck the 150mm section of the belt with your fingernail. 
    - *Watch the **Signal Indicator** bars above the frequency display to ensure your pluck is strong enough to pass the filter.*
-5. **Auto-Save**: Hold the phone steady. Once the frequency stabilizes for ~1 second, it will automatically save to the channel.
-6. **Check Spread**: After measuring all belts, check the **SPREAD** value in the Comparison section to ensure they are balanced.
-
-## ️ Custom Mode Explained
-
-If you are tuning a different printer (like a Trident, Switchwire, or non-Voron CoreXY), select the **Custom** tab to input your specific parameters:
-
-- **Target Hz**: The ideal frequency you are aiming for.
-- **Range Min / Range Max Hz**: Defines the "Perfect" green zone on the gauge and status badge.
-- **Gauge Min / Gauge Max Hz**: Defines the absolute minimum and maximum bounds of the visual slider track.
-
-## 💡 Tips for Best Results
-
-- **Quiet Environment**: Turn off printer fans, exhaust systems, and nearby appliances. 
-- **Plucking Technique**: Use your fingernail or a guitar pick for a clean, sharp pluck. Avoid muting the belt with your other hand.
-- **Microphone Placement**: Hold your phone's microphone 2–4 inches away from the belt segment you are plucking.
-- **Harmonics**: If your belt is very tight, it might naturally ring at a harmonic (e.g., 165 Hz instead of 55 Hz). The app's harmonic rejection handles this, but plucking closer to the center of the belt segment emphasizes the fundamental frequency.
+6. **Live Feedback**: The main display, channel badges, and comparison chart will update instantly on every pluck.
+7. **Check Spread**: After measuring all belts, check the **SPREAD** value in the Comparison section to ensure they are balanced.
 
 ## 🛠️ Technical Details
 
@@ -74,7 +67,7 @@ This tool is provided as-is for community convenience. Always double-check your 
 
 ## 🙌 Credits & Inspiration
 
-- **Voron Design**: For the amazing open-source 3D printer ecosystem.
+- **Voron Design**: For the amazing open-source 3D printer ecosystem and official tuning documentation.
 - **Web Audio API Community**: For the foundational pitch-detection algorithms (inspired by Chris Wilson's [Pitch Detect](https://github.com/cwilso/PitchDetect)).
 
 ---
