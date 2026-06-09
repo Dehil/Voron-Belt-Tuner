@@ -61,6 +61,18 @@
             letter-spacing: 3px;
         }
 
+        .warning-box {
+            background: var(--red-dim);
+            border: 1px solid var(--red);
+            color: var(--red);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
         .section-label {
             font-size: 0.7rem;
             color: var(--text-secondary);
@@ -562,6 +574,10 @@
             <div class="subtitle">3D PRINTER CALIBRATION TOOL</div>
         </header>
 
+        <div class="warning-box">
+            ⚠️ TARGETS ARE FOR A <strong>150MM</strong> PLUCK LENGTH
+        </div>
+
         <div class="section-label">BELTS</div>
         <div class="tabs">
             <button class="tab active" data-belt="Z">Z Belts</button>
@@ -580,7 +596,7 @@
         </div>
 
         <div class="target-info" id="targetInfo">
-            Target: <strong>55 Hz</strong> | Range: <strong>50 - 60 Hz</strong>
+            Target: <strong>140 Hz</strong> | Range: <strong>130 - 150 Hz</strong>
         </div>
 
         <div class="section-label">CHANNEL</div>
@@ -615,14 +631,14 @@
             <div class="saved-info" id="savedInfo">No measurement saved</div>
 
             <div class="gauge-container">
-                <div class="gauge-zone-label" id="gaugeZoneLabel">50-60 Hz</div>
+                <div class="gauge-zone-label" id="gaugeZoneLabel">130-150 Hz</div>
                 <div class="gauge-track">
                     <div class="gauge-zone" id="gaugeZone"></div>
                 </div>
                 <div class="gauge-indicator inactive" id="gaugeIndicator" style="left: 50%"></div>
                 <div class="gauge-labels">
-                    <span id="gaugeMin">40 Hz</span>
-                    <span id="gaugeMax">80 Hz</span>
+                    <span id="gaugeMin">100 Hz</span>
+                    <span id="gaugeMax">180 Hz</span>
                 </div>
             </div>
 
@@ -644,12 +660,13 @@
             <div class="instructions-title">HOW TO USE</div>
             <ul class="instructions-list">
                 <li data-num="1">Select belt type and channel (Z0-Z3 or A/B)</li>
-                <li data-num="2">Tap MEASURE and allow microphone access</li>
-                <li data-num="3">Pluck the belt firmly with your fingernail</li>
-                <li data-num="4">Hold phone 2-4 inches from the belt</li>
-                <li data-num="5">Values update live on every pluck</li>
-                <li data-num="6">Tap STOP to freeze the last reading</li>
-                <li data-num="7">Measure all belts → check spread</li>
+                <li data-num="2">Position belt to pluck a <strong>150mm section</strong> (see official docs)</li>
+                <li data-num="3">Tap MEASURE and allow microphone access</li>
+                <li data-num="4">Pluck the belt firmly with your fingernail</li>
+                <li data-num="5">Hold phone 2-4 inches from the belt</li>
+                <li data-num="6">Values update live on every pluck</li>
+                <li data-num="7">Tap STOP to freeze the last reading</li>
+                <li data-num="8">Measure all belts → check spread</li>
             </ul>
         </div>
     </div>
@@ -663,11 +680,12 @@
     </div>
 
     <script>
-        // Configuration
+        // Configuration based on Official Voron Documentation
+        // https://docs.vorondesign.com/tuning/secondary_printer_tuning.html
         const CONFIG = {
-            Z: { target: 55, min: 50, max: 60, gaugeMin: 40, gaugeMax: 80, channels: ['Z0', 'Z1', 'Z2', 'Z3'] },
+            Z: { target: 140, min: 130, max: 150, gaugeMin: 100, gaugeMax: 180, channels: ['Z0', 'Z1', 'Z2', 'Z3'] },
             AB: { target: 110, min: 100, max: 120, gaugeMin: 80, gaugeMax: 150, channels: ['A', 'B'] },
-            custom: { target: 55, min: 50, max: 60, gaugeMin: 40, gaugeMax: 80, channels: ['CH1', 'CH2', 'CH3', 'CH4'] }
+            custom: { target: 140, min: 130, max: 150, gaugeMin: 100, gaugeMax: 180, channels: ['CH1', 'CH2', 'CH3', 'CH4'] }
         };
 
         // Pluck detection threshold
