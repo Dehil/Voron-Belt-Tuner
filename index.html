@@ -46,15 +46,10 @@
         }
 
         .logo {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--voron-dark);
-            letter-spacing: 4px;
-            margin-bottom: 5px;
-        }
-
-        .logo span {
-            color: var(--voron-red);
+            width: 242px;
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
         }
 
         .subtitle {
@@ -62,17 +57,6 @@
             color: #666;
             letter-spacing: 2px;
             text-transform: uppercase;
-        }
-
-        .warning-box {
-            background: #fff3cd;
-            border-left: 4px solid var(--voron-gold);
-            color: #856404;
-            padding: 15px;
-            margin-bottom: 25px;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            font-weight: 600;
         }
 
         .section-label {
@@ -618,7 +602,7 @@
             }
             
             .logo {
-                font-size: 2rem;
+                width: 180px;
             }
         }
     </style>
@@ -626,13 +610,9 @@
 <body>
     <div class="container">
         <header>
-            <div class="logo">VORON<span>.</span></div>
+            <img src="voron_design_logo.png" alt="Voron Design" class="logo">
             <div class="subtitle">Belt Tuner Calibration Tool</div>
         </header>
-
-        <div class="warning-box">
-            ⚠️ Targets are for a <strong>150mm</strong> pluck length
-        </div>
 
         <div class="section-label">Belt Type</div>
         <div class="tabs">
