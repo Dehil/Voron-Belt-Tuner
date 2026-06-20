@@ -12,30 +12,25 @@
         }
 
         :root {
-            --bg-primary: #0a0e27;
-            --bg-secondary: #111638;
-            --bg-card: #1a1f4a;
-            --cyan: #00d4ff;
-            --cyan-dim: rgba(0, 212, 255, 0.2);
-            --green: #00ff88;
-            --green-dim: rgba(0, 255, 136, 0.2);
-            --orange: #ff9500;
-            --orange-dim: rgba(255, 149, 0, 0.2);
-            --red: #ff3366;
-            --red-dim: rgba(255, 51, 102, 0.2);
-            --text-primary: #ffffff;
-            --text-secondary: #8892b0;
-            --border: rgba(0, 212, 255, 0.3);
+            --voron-red: #FF2300;
+            --voron-light: #F8F9FA;
+            --voron-gold: #856404;
+            --voron-dark: #1a1a1a;
+            --voron-gray: #2d2d2d;
+            --voron-border: #e0e0e0;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
         }
 
         body {
-            font-family: 'Courier New', monospace;
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: var(--voron-light);
+            color: var(--voron-dark);
             min-height: 100vh;
             padding: 20px;
             padding-bottom: 140px;
-            overflow-x: hidden;
+            line-height: 1.6;
         }
 
         .container {
@@ -46,207 +41,234 @@
         header {
             text-align: center;
             margin-bottom: 30px;
+            padding: 20px 0;
+            border-bottom: 3px solid var(--voron-red);
         }
 
-        h1 {
-            font-size: 1.8rem;
-            color: var(--green);
-            letter-spacing: 2px;
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--voron-dark);
+            letter-spacing: 4px;
             margin-bottom: 5px;
         }
 
+        .logo span {
+            color: var(--voron-red);
+        }
+
         .subtitle {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            letter-spacing: 3px;
+            font-size: 0.85rem;
+            color: #666;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
         .warning-box {
-            background: var(--red-dim);
-            border: 1px solid var(--red);
-            color: var(--red);
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            margin-bottom: 15px;
-            text-align: center;
-            font-weight: bold;
+            background: #fff3cd;
+            border-left: 4px solid var(--voron-gold);
+            color: #856404;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
         }
 
         .section-label {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            letter-spacing: 2px;
+            font-size: 0.75rem;
+            color: #666;
+            letter-spacing: 1px;
             margin-bottom: 10px;
             text-transform: uppercase;
+            font-weight: 600;
         }
 
         .tabs {
             display: flex;
             gap: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .tab {
             flex: 1;
             padding: 12px;
-            background: var(--bg-secondary);
-            border: 2px solid transparent;
-            border-radius: 8px;
-            color: var(--text-secondary);
+            background: white;
+            border: 2px solid var(--voron-border);
+            border-radius: 4px;
+            color: #666;
             font-family: inherit;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             text-align: center;
         }
 
         .tab.active {
-            border-color: var(--cyan);
-            color: var(--cyan);
-            background: var(--cyan-dim);
+            border-color: var(--voron-red);
+            color: var(--voron-red);
+            background: white;
+        }
+
+        .tab:hover:not(.active) {
+            border-color: #999;
+            color: var(--voron-dark);
         }
 
         .target-info {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid var(--voron-border);
         }
 
         .target-info strong {
-            color: var(--text-primary);
+            color: var(--voron-dark);
+            font-weight: 600;
         }
 
         .channels {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 10px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
         .channel {
-            background: var(--bg-secondary);
-            border: 2px solid transparent;
-            border-radius: 8px;
+            background: white;
+            border: 2px solid var(--voron-border);
+            border-radius: 4px;
             padding: 15px 10px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
-            position: relative;
         }
 
         .channel.active {
-            border-color: var(--cyan);
-            background: var(--cyan-dim);
+            border-color: var(--voron-red);
+            background: #fff5f5;
         }
 
         .channel.has-measurement {
-            border-color: var(--border);
+            border-color: var(--voron-red);
         }
 
         .channel-label {
-            font-size: 0.9rem;
-            font-weight: bold;
+            font-size: 0.95rem;
+            font-weight: 700;
             margin-bottom: 5px;
+            color: var(--voron-dark);
         }
 
         .channel-value {
             font-size: 1.1rem;
-            color: var(--cyan);
+            font-weight: 700;
+            color: var(--voron-red);
             margin-bottom: 3px;
         }
 
         .channel-status {
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             letter-spacing: 1px;
+            font-weight: 600;
+            text-transform: uppercase;
         }
 
-        .status-perfect { color: var(--green); }
-        .status-slight { color: var(--orange); }
-        .status-tight { color: var(--red); }
-        .status-loose { color: var(--orange); }
+        .status-perfect { color: var(--success); }
+        .status-slight { color: var(--warning); }
+        .status-tight { color: var(--danger); }
+        .status-loose { color: var(--warning); }
 
         .main-display {
-            background: var(--bg-secondary);
-            border: 2px solid var(--border);
-            border-radius: 12px;
+            background: white;
+            border: 2px solid var(--voron-border);
+            border-radius: 4px;
             padding: 30px 20px;
             text-align: center;
             margin-bottom: 25px;
         }
 
         .frequency-display {
-            font-size: 4rem;
-            font-weight: bold;
-            color: var(--cyan);
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: var(--voron-red);
             margin-bottom: 10px;
             font-variant-numeric: tabular-nums;
+            line-height: 1;
         }
 
         .frequency-display.waiting {
-            color: var(--text-secondary);
+            color: #999;
         }
 
         .frequency-unit {
             font-size: 1.2rem;
-            color: var(--text-secondary);
-            margin-bottom: 15px;
+            color: #666;
+            margin-bottom: 20px;
+            font-weight: 600;
         }
 
         .status-badge {
             display: inline-block;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 0.85rem;
+            padding: 10px 25px;
+            border-radius: 4px;
+            font-size: 0.9rem;
             letter-spacing: 2px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             border: 2px solid;
+            font-weight: 700;
+            text-transform: uppercase;
         }
 
         .badge-perfect {
-            background: var(--green-dim);
-            border-color: var(--green);
-            color: var(--green);
+            background: #d4edda;
+            border-color: var(--success);
+            color: var(--success);
         }
 
         .badge-slight {
-            background: var(--orange-dim);
-            border-color: var(--orange);
-            color: var(--orange);
+            background: #fff3cd;
+            border-color: var(--warning);
+            color: var(--warning);
         }
 
         .badge-tight {
-            background: var(--red-dim);
-            border-color: var(--red);
-            color: var(--red);
+            background: #f8d7da;
+            border-color: var(--danger);
+            color: var(--danger);
         }
 
         .badge-waiting {
-            background: var(--bg-primary);
-            border-color: var(--text-secondary);
-            color: var(--text-secondary);
+            background: #e9ecef;
+            border-color: #999;
+            color: #666;
         }
 
         .saved-info {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 25px;
+            font-style: italic;
         }
 
         .gauge-container {
             position: relative;
-            height: 60px;
-            margin: 20px 0;
+            height: 80px;
+            margin: 30px 0;
         }
 
         .gauge-track {
             position: absolute;
-            top: 25px;
+            top: 35px;
             left: 0;
             right: 0;
-            height: 8px;
-            background: var(--bg-primary);
-            border-radius: 4px;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
             overflow: hidden;
         }
 
@@ -254,43 +276,46 @@
             position: absolute;
             top: 0;
             height: 100%;
-            background: var(--green-dim);
-            border-left: 2px solid var(--green);
-            border-right: 2px solid var(--green);
+            background: rgba(40, 167, 69, 0.2);
+            border-left: 2px solid var(--success);
+            border-right: 2px solid var(--success);
         }
 
         .gauge-indicator {
             position: absolute;
-            top: 20px;
-            width: 20px;
-            height: 20px;
-            background: var(--cyan);
+            top: 25px;
+            width: 24px;
+            height: 24px;
+            background: var(--voron-red);
             border-radius: 50%;
             transform: translateX(-50%);
             transition: left 0.3s;
-            box-shadow: 0 0 10px var(--cyan);
+            box-shadow: 0 2px 8px rgba(255, 35, 0, 0.4);
+            border: 3px solid white;
         }
 
         .gauge-indicator.inactive {
-            background: var(--text-secondary);
+            background: #999;
             box-shadow: none;
-            opacity: 0.3;
+            opacity: 0.5;
         }
 
         .gauge-labels {
             display: flex;
             justify-content: space-between;
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            margin-top: 35px;
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 45px;
+            font-weight: 600;
         }
 
         .gauge-zone-label {
             position: absolute;
             top: 5px;
-            font-size: 0.7rem;
-            color: var(--green);
+            font-size: 0.8rem;
+            color: var(--success);
             transform: translateX(-50%);
+            font-weight: 700;
         }
 
         .spectrum {
@@ -298,148 +323,168 @@
             display: flex;
             align-items: flex-end;
             gap: 2px;
-            margin-top: 20px;
+            margin-top: 30px;
             padding: 0 10px;
         }
 
         .spectrum-bar {
             flex: 1;
-            background: var(--cyan);
+            background: var(--voron-red);
             opacity: 0.6;
             transition: height 0.1s;
             min-height: 2px;
         }
 
         .comparison {
-            background: var(--bg-secondary);
-            border-radius: 12px;
+            background: white;
+            border: 2px solid var(--voron-border);
+            border-radius: 4px;
             padding: 20px;
             margin-bottom: 20px;
         }
 
         .comparison-title {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            letter-spacing: 2px;
-            margin-bottom: 15px;
+            font-size: 0.75rem;
+            color: #666;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-weight: 700;
         }
 
         .comparison-row {
             display: flex;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             gap: 10px;
         }
 
         .comparison-label {
             width: 40px;
-            font-size: 0.85rem;
-            font-weight: bold;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--voron-dark);
         }
 
         .comparison-bar-container {
             flex: 1;
-            height: 8px;
-            background: var(--bg-primary);
-            border-radius: 4px;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
             overflow: hidden;
-            position: relative;
         }
 
         .comparison-bar {
             height: 100%;
-            border-radius: 4px;
+            border-radius: 5px;
             transition: width 0.1s;
         }
 
-        .bar-perfect { background: var(--green); }
-        .bar-slight { background: var(--orange); }
-        .bar-tight { background: var(--red); }
+        .bar-perfect { background: var(--success); }
+        .bar-slight { background: var(--warning); }
+        .bar-tight { background: var(--danger); }
 
         .comparison-value {
-            width: 70px;
+            width: 75px;
             text-align: right;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--voron-dark);
         }
 
         .comparison-status {
             width: 100px;
             text-align: right;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             letter-spacing: 1px;
+            font-weight: 600;
+            text-transform: uppercase;
         }
 
         .spread-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 15px;
+            margin-top: 20px;
             padding-top: 15px;
-            border-top: 1px solid var(--border);
+            border-top: 2px solid var(--voron-border);
         }
 
         .spread-label {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            letter-spacing: 2px;
+            font-size: 0.75rem;
+            color: #666;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 700;
         }
 
         .spread-value {
-            font-size: 0.9rem;
-            font-weight: bold;
+            font-size: 1rem;
+            font-weight: 700;
         }
 
-        .spread-good { color: var(--green); }
-        .spread-bad { color: var(--red); }
+        .spread-good { color: var(--success); }
+        .spread-bad { color: var(--danger); }
 
         .reset-btn {
             width: 100%;
             padding: 15px;
-            background: var(--bg-secondary);
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-secondary);
+            background: white;
+            border: 2px solid var(--voron-border);
+            border-radius: 4px;
+            color: #666;
             font-family: inherit;
-            font-size: 0.85rem;
-            letter-spacing: 2px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
             cursor: pointer;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             transition: all 0.3s;
+            text-transform: uppercase;
         }
 
         .reset-btn:hover {
-            background: var(--bg-card);
-            color: var(--text-primary);
+            background: var(--voron-dark);
+            color: white;
+            border-color: var(--voron-dark);
         }
 
         .instructions {
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            padding: 20px;
+            background: white;
+            border: 2px solid var(--voron-border);
+            border-radius: 4px;
+            padding: 25px;
             margin-bottom: 20px;
         }
 
         .instructions-title {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            letter-spacing: 2px;
+            font-size: 0.75rem;
+            color: #666;
+            letter-spacing: 1px;
             margin-bottom: 15px;
+            text-transform: uppercase;
+            font-weight: 700;
         }
 
         .instructions-list {
             list-style: none;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
+            font-size: 0.9rem;
+            color: #666;
             line-height: 1.8;
         }
 
         .instructions-list li {
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            padding-left: 30px;
+            position: relative;
         }
 
         .instructions-list li::before {
-            content: attr(data-num) ". ";
-            color: var(--cyan);
+            content: attr(data-num);
+            position: absolute;
+            left: 0;
+            color: var(--voron-red);
+            font-weight: 700;
         }
 
         /* Sticky bottom button container */
@@ -448,7 +493,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(to bottom, transparent, var(--bg-primary) 20%);
+            background: linear-gradient(to bottom, transparent, var(--voron-light) 20%);
             padding: 20px;
             z-index: 100;
         }
@@ -461,26 +506,28 @@
         .action-btn {
             width: 100%;
             padding: 20px;
-            background: var(--bg-secondary);
-            border: 2px solid var(--cyan);
-            border-radius: 12px;
-            color: var(--cyan);
+            background: var(--voron-red);
+            border: none;
+            border-radius: 4px;
+            color: white;
             font-family: inherit;
             font-size: 1.1rem;
-            font-weight: bold;
+            font-weight: 700;
             letter-spacing: 2px;
             cursor: pointer;
             transition: all 0.3s;
             margin-bottom: 10px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 6px rgba(255, 35, 0, 0.2);
         }
 
         .action-btn:hover {
-            background: var(--cyan-dim);
+            background: #e61f00;
+            box-shadow: 0 6px 12px rgba(255, 35, 0, 0.3);
         }
 
         .action-btn.listening {
-            border-color: var(--red);
-            color: var(--red);
+            background: var(--voron-dark);
             animation: pulse 2s infinite;
         }
 
@@ -491,13 +538,14 @@
 
         .footer-hint {
             text-align: center;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
+            font-size: 0.8rem;
+            color: #666;
+            font-style: italic;
         }
 
         .custom-input {
             display: none;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .custom-input.visible {
@@ -513,18 +561,22 @@
 
         .custom-input-group input {
             padding: 12px;
-            background: var(--bg-secondary);
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-primary);
+            background: white;
+            border: 2px solid var(--voron-border);
+            border-radius: 4px;
+            color: var(--voron-dark);
             font-family: inherit;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             width: 100%;
         }
 
         .custom-input-group input:focus {
             outline: none;
-            border-color: var(--cyan);
+            border-color: var(--voron-red);
+        }
+
+        .custom-input-group input::placeholder {
+            color: #999;
         }
 
         /* Signal strength indicator */
@@ -533,28 +585,28 @@
             align-items: center;
             justify-content: center;
             gap: 5px;
-            margin-bottom: 15px;
-            height: 20px;
+            margin-bottom: 20px;
+            height: 25px;
         }
 
         .signal-bar {
-            width: 4px;
-            background: var(--text-secondary);
+            width: 5px;
+            background: #ddd;
             border-radius: 2px;
             transition: all 0.1s;
         }
 
         .signal-bar.active {
-            background: var(--cyan);
+            background: var(--voron-red);
         }
 
         .signal-bar.strong {
-            background: var(--green);
+            background: var(--success);
         }
 
         @media (max-width: 480px) {
             .frequency-display {
-                font-size: 3rem;
+                font-size: 3.5rem;
             }
             
             .channels {
@@ -564,21 +616,25 @@
             body {
                 padding-bottom: 150px;
             }
+            
+            .logo {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>VORON BELT TUNER</h1>
-            <div class="subtitle">3D PRINTER CALIBRATION TOOL</div>
+            <div class="logo">VORON<span>.</span></div>
+            <div class="subtitle">Belt Tuner Calibration Tool</div>
         </header>
 
         <div class="warning-box">
-            ⚠️ TARGETS ARE FOR A <strong>150MM</strong> PLUCK LENGTH
+            ⚠️ Targets are for a <strong>150mm</strong> pluck length
         </div>
 
-        <div class="section-label">BELTS</div>
+        <div class="section-label">Belt Type</div>
         <div class="tabs">
             <button class="tab active" data-belt="Z">Z Belts</button>
             <button class="tab" data-belt="AB">A/B Belts</button>
@@ -599,7 +655,7 @@
             Target: <strong>140 Hz</strong> | Range: <strong>130 - 150 Hz</strong>
         </div>
 
-        <div class="section-label">CHANNEL</div>
+        <div class="section-label">Channel</div>
         <div class="channels" id="channels">
             <div class="channel active" data-channel="0">
                 <div class="channel-label">Z0</div>
@@ -627,7 +683,7 @@
             <div class="signal-indicator" id="signalIndicator"></div>
             <div class="frequency-display waiting" id="freqDisplay">--</div>
             <div class="frequency-unit">Hz</div>
-            <div class="status-badge badge-waiting" id="statusBadge">WAITING FOR PLUCK</div>
+            <div class="status-badge badge-waiting" id="statusBadge">Waiting for Pluck</div>
             <div class="saved-info" id="savedInfo">No measurement saved</div>
 
             <div class="gauge-container">
@@ -646,27 +702,27 @@
         </div>
 
         <div class="comparison">
-            <div class="comparison-title">COMPARISON</div>
+            <div class="comparison-title">Belt Comparison</div>
             <div id="comparisonRows"></div>
             <div class="spread-row">
-                <div class="spread-label">SPREAD</div>
+                <div class="spread-label">Spread</div>
                 <div class="spread-value" id="spreadValue">--</div>
             </div>
         </div>
 
-        <button class="reset-btn" id="resetBtn">RESET ALL MEASUREMENTS</button>
+        <button class="reset-btn" id="resetBtn">Reset All Measurements</button>
 
         <div class="instructions">
-            <div class="instructions-title">HOW TO USE</div>
+            <div class="instructions-title">How to Use</div>
             <ul class="instructions-list">
                 <li data-num="1">Select belt type and channel (Z0-Z3 or A/B)</li>
-                <li data-num="2">Position belt to pluck a <strong>150mm section</strong> (see official docs)</li>
-                <li data-num="3">Tap MEASURE and allow microphone access</li>
+                <li data-num="2">Position belt to pluck a 150mm section</li>
+                <li data-num="3">Tap Measure and allow microphone access</li>
                 <li data-num="4">Pluck the belt firmly with your fingernail</li>
                 <li data-num="5">Hold phone 2-4 inches from the belt</li>
                 <li data-num="6">Values update live on every pluck</li>
-                <li data-num="7">Tap STOP to freeze the last reading</li>
-                <li data-num="8">Measure all belts → check spread</li>
+                <li data-num="7">Tap Stop to freeze the last reading</li>
+                <li data-num="8">Measure all belts and check spread</li>
             </ul>
         </div>
     </div>
@@ -674,21 +730,19 @@
     <!-- Sticky bottom controls -->
     <div class="bottom-controls">
         <div class="container">
-            <button class="action-btn" id="actionBtn">◎ MEASURE - Z0</button>
+            <button class="action-btn" id="actionBtn">◎ Measure - Z0</button>
             <div class="footer-hint">Pluck belt firmly → fundamental detected automatically</div>
         </div>
     </div>
 
     <script>
         // Configuration based on Official Voron Documentation
-        // https://docs.vorondesign.com/tuning/secondary_printer_tuning.html
         const CONFIG = {
             Z: { target: 140, min: 130, max: 150, gaugeMin: 100, gaugeMax: 180, channels: ['Z0', 'Z1', 'Z2', 'Z3'] },
             AB: { target: 110, min: 100, max: 120, gaugeMin: 80, gaugeMax: 150, channels: ['A', 'B'] },
             custom: { target: 140, min: 130, max: 150, gaugeMin: 100, gaugeMax: 180, channels: ['CH1', 'CH2', 'CH3', 'CH4'] }
         };
 
-        // Pluck detection threshold
         const PLUCK_THRESHOLD = 0.02;
 
         let currentBelt = 'Z';
@@ -824,22 +878,22 @@
 
         function getStatus(freq) {
             const config = CONFIG[currentBelt];
-            if (freq >= config.min && freq <= config.max) return { text: 'PERFECT', class: 'perfect' };
+            if (freq >= config.min && freq <= config.max) return { text: 'Perfect', class: 'perfect' };
             if (freq < config.min) {
                 const diff = config.min - freq;
-                if (diff <= 5) return { text: 'SLIGHTLY LOOSE', class: 'slight' };
-                return { text: 'TOO LOOSE', class: 'tight' };
+                if (diff <= 5) return { text: 'Slightly Loose', class: 'slight' };
+                return { text: 'Too Loose', class: 'tight' };
             }
             const diff = freq - config.max;
-            if (diff <= 5) return { text: 'SLIGHTLY TIGHT', class: 'slight' };
-            return { text: 'TOO TIGHT', class: 'tight' };
+            if (diff <= 5) return { text: 'Slightly Tight', class: 'slight' };
+            return { text: 'Too Tight', class: 'tight' };
         }
 
         function updateActionButton() {
             const channels = CONFIG[currentBelt].channels;
             const channelName = channels[currentChannel];
             const btn = document.getElementById('actionBtn');
-            btn.textContent = isListening ? '■ STOP' : `◎ MEASURE - ${channelName}`;
+            btn.textContent = isListening ? '■ Stop' : `◎ Measure - ${channelName}`;
             btn.classList.toggle('listening', isListening);
         }
 
@@ -876,7 +930,7 @@
             
             if (values.length > 1) {
                 const isGood = spread <= 5;
-                spreadEl.textContent = `${spread.toFixed(1)} Hz ${isGood ? '✓ BALANCED' : '✗ RE-TENSION'}`;
+                spreadEl.textContent = `${spread.toFixed(1)} Hz ${isGood ? '✓ Balanced' : '✗ Re-Tension'}`;
                 spreadEl.className = 'spread-value ' + (isGood ? 'spread-good' : 'spread-bad');
             } else {
                 spreadEl.textContent = '--';
@@ -998,11 +1052,10 @@
                 if (animationId) cancelAnimationFrame(animationId);
                 if (audioContext) audioContext.close();
                 
-                // Retain last measured value - DO NOT reset display
                 if (lastFrequency !== null) {
                     const key = `${currentBelt}-${currentChannel}`;
                     const savedFreq = measurements[key] || lastFrequency;
-                    document.getElementById('savedInfo').textContent = `SAVED: ${savedFreq.toFixed(1)} Hz - tap MEASURE to update`;
+                    document.getElementById('savedInfo').textContent = `Saved: ${savedFreq.toFixed(1)} Hz - tap Measure to update`;
                 }
                 
                 updateActionButton();
@@ -1047,7 +1100,6 @@
                     badge.className = `status-badge badge-${status.class}`;
                     document.getElementById('gaugeIndicator').classList.remove('inactive');
                     
-                    // Update measurement and UI immediately on every pluck
                     const key = `${currentBelt}-${currentChannel}`;
                     measurements[key] = freq;
                     
@@ -1057,13 +1109,13 @@
                     statusEl.className = `channel-status status-${status.class}`;
                     document.querySelector(`[data-channel="${currentChannel}"]`).classList.add('has-measurement');
                     
-                    document.getElementById('savedInfo').textContent = `LIVE: ${freq.toFixed(1)} Hz - adjusting...`;
+                    document.getElementById('savedInfo').textContent = `Live: ${freq.toFixed(1)} Hz - adjusting...`;
                     
                     updateComparison();
                 }
             } else {
                 if (lastFrequency === null) {
-                    document.getElementById('statusBadge').textContent = 'WAITING FOR PLUCK';
+                    document.getElementById('statusBadge').textContent = 'Waiting for Pluck';
                     document.getElementById('statusBadge').className = 'status-badge badge-waiting';
                 }
             }
@@ -1081,7 +1133,7 @@
             document.getElementById('savedInfo').textContent = 'No measurement saved';
             document.getElementById('freqDisplay').textContent = '--';
             document.getElementById('freqDisplay').classList.add('waiting');
-            document.getElementById('statusBadge').textContent = 'WAITING FOR PLUCK';
+            document.getElementById('statusBadge').textContent = 'Waiting for Pluck';
             document.getElementById('statusBadge').className = 'status-badge badge-waiting';
             document.getElementById('gaugeIndicator').classList.add('inactive');
             lastFrequency = null;
